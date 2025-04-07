@@ -2,6 +2,7 @@
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore.V1;
 using System.Net;
+using BCrypt.Net;
 
 namespace LoginAPI.Firebase
 {
@@ -25,18 +26,41 @@ namespace LoginAPI.Firebase
         }
 
         // Metodo que adiciona o usuario
-        public async Task AddUserAsync(string Uid, string Email)
+        public async Task AddUserAsync(string Uid, string Email, string Password)
         {
-            var docRef = _firestoreDb.Collection(FirebaseConfig.DataBaseName).Document(Uid);
-            await docRef.SetAsync(new { Email });
+            string HashedPassword = BCrypt.Net.BCrypt.HashPassword(Password);   // Criptografa a senha
+
+            DocumentReference docRef = _firestoreDb.Collection(FirebaseConfig.DataBaseName).Document(Uid);
+            await docRef.SetAsync(new 
+            { 
+                Email,
+                HashedPassword
+            });
         }
 
         // Metodo que verifica se existe o usuario
-        public async Task<bool> UserExistsAsync(string email)
+        public async Task<bool> UserExistsAsync(string Email)
         {
             var users = await _firestoreDb.Collection(FirebaseConfig.DataBaseName)
-                .WhereEqualTo("email", email).GetSnapshotAsync();
+                .WhereEqualTo("Email", Email).GetSnapshotAsync();
             return users.Count > 0;
+        }
+
+        // Metodo de validar o usuario
+        public async Task<bool> ValidateUserAsync(string Email, string Password)
+        {
+            var users = await _firestoreDb.Collection(FirebaseConfig.DataBaseName)
+                .WhereEqualTo("Email", Email).GetSnapshotAsync();
+
+            // Não existe usuário
+            if (users.Count == 0)
+                return false;
+
+            // Pega o documento e verifica a senha, caso a senha digitada seja igual a senha armazenada, retorna True
+            var userDoc = users.Documents.First();
+            var storedHash = userDoc.GetValue<string>("HashedPassword");
+
+            return BCrypt.Net.BCrypt.Verify(Password, storedHash);
         }
     }
 }
