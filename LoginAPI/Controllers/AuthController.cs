@@ -18,12 +18,12 @@ namespace LoginAPI.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDto dto)
         {
-            var exists = await _firestore.UserExistsAsync(dto.Email);
+            bool exists = await _firestore.UserExistsAsync(dto.Email);  // Verifica se existe o usuario com o email
             if (exists)
-                return Conflict("Usuário já existe.");
+                return Conflict("Já existe uma conta com esse e-mail! Logue na sua conta ou crie outro usuário.");
 
             await _firestore.AddUserAsync(Guid.NewGuid().ToString(), dto.Email);
-            return Ok("Usuário registrado com sucesso.");
+            return Ok("Conta registrada com sucesso!");
         }
 
     }

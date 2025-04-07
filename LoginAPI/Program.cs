@@ -1,5 +1,6 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using LoginAPI.Firebase;
 
 namespace LoginAPI
 {
@@ -12,7 +13,7 @@ namespace LoginAPI
             // Inicializar o firebase
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromFile(@"C:\Users\Micro\Desktop\Keys\SDK-Admin-Firebase.json")
+                Credential = GoogleCredential.FromFile(FirebaseConfig.CredentialPath)
             });                                       
 
             // Add services to the container.

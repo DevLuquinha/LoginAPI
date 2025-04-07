@@ -13,7 +13,7 @@ namespace LoginAPI.Firebase
         public FirebaseService()
         {
             // Caminho absoluto para sua chave do Firebase
-            string path = @"C:\Users\Micro\Desktop\Keys\SDK-Admin-Firebase.json";
+            string path = FirebaseConfig.CredentialPath;
 
             GoogleCredential credential = GoogleCredential.FromFile(path);
             var builder = new FirestoreClientBuilder
@@ -21,18 +21,20 @@ namespace LoginAPI.Firebase
                 Credential = credential
             };
 
-            _firestoreDb = FirestoreDb.Create("sistema-de-login-do-luquinha", builder.Build());
+            _firestoreDb = FirestoreDb.Create(FirebaseConfig.ProjectId, builder.Build());
         }
 
+        // Metodo que adiciona o usuario
         public async Task AddUserAsync(string uid, string email)
         {
-            var docRef = _firestoreDb.Collection("Usuarios").Document(uid);
+            var docRef = _firestoreDb.Collection(FirebaseConfig.DataBaseName).Document(uid);
             await docRef.SetAsync(new { email });
         }
 
+        // Metodo que verifica se existe o usuario
         public async Task<bool> UserExistsAsync(string email)
         {
-            var users = await _firestoreDb.Collection("Usuarios")
+            var users = await _firestoreDb.Collection(FirebaseConfig.DataBaseName)
                 .WhereEqualTo("email", email).GetSnapshotAsync();
             return users.Count > 0;
         }
