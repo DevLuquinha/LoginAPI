@@ -25,10 +25,10 @@ namespace LoginAPI.Firebase
         }
 
         // Metodo que adiciona o usuario
-        public async Task AddUserAsync(string uid, string email)
+        public async Task AddUserAsync(string Uid, string Email)
         {
-            var docRef = _firestoreDb.Collection(FirebaseConfig.DataBaseName).Document(uid);
-            await docRef.SetAsync(new { email });
+            var docRef = _firestoreDb.Collection(FirebaseConfig.DataBaseName).Document(Uid);
+            await docRef.SetAsync(new { Email });
         }
 
         // Metodo que verifica se existe o usuario
