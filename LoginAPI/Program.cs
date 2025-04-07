@@ -12,10 +12,8 @@ namespace LoginAPI
             // Inicializar o firebase
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromFile("C:\\Users\\Micro\\Desktop\\Keys\\SDK-Admin-Firebase.json"),
-            });
-
-
+                Credential = GoogleCredential.FromFile(@"C:\Users\Micro\Desktop\Keys\SDK-Admin-Firebase.json")
+            });                                       
 
             // Add services to the container.
             builder.Services.AddControllers();
