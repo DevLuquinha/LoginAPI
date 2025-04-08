@@ -46,6 +46,7 @@ namespace LoginAPI.Firebase
             return users.Count > 0;
         }
 
+
         // Metodo de validar o usuario
         public async Task<bool> ValidateUserAsync(string Email, string Password)
         {

@@ -26,12 +26,12 @@ namespace LoginAPI.Controllers
             return Ok("Conta registrada com sucesso!");
         }
 
-        [HttpGet("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] SignInDto Dto)
         {
             bool exists = await _firestore.ValidateUserAsync(Dto.Email, Dto.Password);  // Verifica se existe o usuario com o email e senha
             if (!exists)
-                return Unauthorized("Usuário não encontrado!");
+                return Unauthorized("Email ou senha incorretos! Por favor, digite novamente.");
             return Ok("Login realizado com sucesso!");
         }
     }
