@@ -32,7 +32,8 @@ namespace LoginAPI.Firebase
 
             DocumentReference docRef = _firestoreDb.Collection(FirebaseConfig.DataBaseName).Document(Uid);
             await docRef.SetAsync(new 
-            { 
+            {
+                Uid,
                 Email,
                 HashedPassword
             });

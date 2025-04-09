@@ -8,7 +8,7 @@ namespace LoginAPI.Services
 {
     public class TokenService
     {
-        public string GenerateToken(User user)
+        public string GenerateToken(string idUser)
         {
             // Chave secreta em bytes
             var key = Encoding.UTF8.GetBytes(Configuration.PrivateKey);
@@ -20,7 +20,7 @@ namespace LoginAPI.Services
             {
                 SigningCredentials = credentials,
                 Expires = DateTime.UtcNow.AddHours(1), // Define a expiração do token
-                Subject = GenerateClaims(user),        // Adiciona os dados do usuário no token
+                Subject = GenerateClaims(idUser),        // Adiciona os dados do usuário no token
             };
 
             // Cria uma instância do JwtSecurityTokenHandler
@@ -34,12 +34,10 @@ namespace LoginAPI.Services
             return tokenString;
         }
 
-        private static ClaimsIdentity GenerateClaims(User user)
+        private static ClaimsIdentity GenerateClaims(string idUser)
         {
             var ci = new ClaimsIdentity();
-            ci.AddClaim(new Claim(ClaimTypes.Name, user.Email));
-
-            ci.AddClaim(new Claim("Id", user.Id));
+            ci.AddClaim(new Claim(ClaimTypes.Name, idUser));
             return ci;
         }
     }

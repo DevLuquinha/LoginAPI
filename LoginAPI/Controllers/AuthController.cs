@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LoginAPI.Firebase;
+using LoginAPI.Services;
 
 namespace LoginAPI.Controllers
 {
@@ -22,7 +23,7 @@ namespace LoginAPI.Controllers
             if (exists)
                 return Conflict("Já existe uma conta com esse e-mail! Logue na sua conta ou crie outro usuário.");
 
-            await _firestore.AddUserAsync(Guid.NewGuid().ToString(), Dto.Email, Dto.Password);
+            await _firestore.AddUserAsync(Dto.Uid, Dto.Email, Dto.Password);
             return Ok("Conta registrada com sucesso!");
         }
 
@@ -32,19 +33,25 @@ namespace LoginAPI.Controllers
             bool exists = await _firestore.ValidateUserAsync(Dto.Email, Dto.Password);  // Verifica se existe o usuario com o email e senha
             if (!exists)
                 return Unauthorized("Email ou senha incorretos! Por favor, digite novamente.");
-            return Ok("Login realizado com sucesso!");
+            
+            TokenService tokenService = new TokenService();
+            var token = tokenService.GenerateToken(Dto.Uid);
+
+            return Ok( new {token} );
         }
     }
 
     #region DTOs
     public class SignUpDto
     {
+        public string Uid { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
     }
 
     public class SignInDto
     {
+        public string Uid { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
     }
