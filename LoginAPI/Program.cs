@@ -33,7 +33,6 @@ namespace LoginAPI
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
