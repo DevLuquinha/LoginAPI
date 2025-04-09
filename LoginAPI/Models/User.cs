@@ -9,5 +9,4 @@ namespace LoginAPI.Models
         public string Password { get; set; }
         public string Jwt { get; set; }
     }
-
 }

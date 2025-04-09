@@ -1,6 +1,9 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using LoginAPI.Firebase;
+using LoginAPI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LoginAPI
 {
@@ -9,6 +12,26 @@ namespace LoginAPI
         public static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddTransient<TokenService>();
+
+            // Definição do JWT
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false; // Para desenvolvimento, desabilitar HTTPS
+                x.SaveToken = true;             // Salvar o token no cookie
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Configuration.PrivateKey)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
 
             // Inicializar o firebase
             FirebaseApp.Create(new AppOptions
@@ -36,7 +59,6 @@ namespace LoginAPI
             app.MapControllers();
 
             app.Run();
-
         }
     }
 }
