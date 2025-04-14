@@ -21,7 +21,7 @@ namespace LoginAPI
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
             {
-                x.RequireHttpsMetadata = false; // Para desenvolvimento, desabilitar HTTPS
+                x.RequireHttpsMetadata = false; 
                 x.SaveToken = true;             // Salvar o token no cookie
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -35,7 +35,7 @@ namespace LoginAPI
             // Inicializar o firebase
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromFile(FirebaseConfig.CredentialPath)
+                Credential = FirebaseConfig.GetCredential()
             });                                       
 
             // Add services to the container.
