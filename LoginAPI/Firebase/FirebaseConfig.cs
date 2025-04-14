@@ -11,6 +11,10 @@ namespace LoginAPI.Firebase
         
         public static string? DataBaseName { get; } = Environment.GetEnvironmentVariable("FIREBASE_DB_NAME");
 
+        public static string base64 = Environment.GetEnvironmentVariable("FIREBASE_CREDENTIAL_BASE64");
+
+        public static string Json = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(base64));
+
         // Metodo para pegar o JSON da chave do Firebase e transformar em string
         public static GoogleCredential GetCredential()
         {
