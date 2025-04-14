@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # Dados locais da maquina 
 LoginAPI/Properties/launchSettings.json
+
+# Não deixa passar as dependências
+.env
