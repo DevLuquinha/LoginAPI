@@ -11,6 +11,7 @@ namespace LoginAPI
     {
         public static void Main(string[] args)
         {
+            DotNetEnv.Env.Load(); // Isso carrega o .env automaticamente
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.Services.AddTransient<TokenService>();
 
