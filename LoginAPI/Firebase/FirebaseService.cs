@@ -12,7 +12,7 @@ namespace LoginAPI.Firebase
         public FirebaseService()
         {
             // Credencial vinda de uma variavel de ambiente
-            GoogleCredential credential = FirebaseConfig.GetCredential();
+            GoogleCredential credential = GoogleCredential.FromJson(FirebaseConfig.Json);
             var builder = new FirestoreClientBuilder
             {
                 Credential = credential
