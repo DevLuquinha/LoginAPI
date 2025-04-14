@@ -11,10 +11,8 @@ namespace LoginAPI.Firebase
         // Construtor da Classe
         public FirebaseService()
         {
-            // Caminho absoluto para sua chave do Firebase
-            string path = FirebaseConfig.CredentialPath;
-
-            GoogleCredential credential = GoogleCredential.FromFile(path);
+            // Credencial vinda de uma variavel de ambiente
+            GoogleCredential credential = FirebaseConfig.GetCredential();
             var builder = new FirestoreClientBuilder
             {
                 Credential = credential
