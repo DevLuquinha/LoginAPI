@@ -1,8 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore.V1;
-using System.Net;
-using BCrypt.Net;
 
 namespace LoginAPI.Firebase
 {

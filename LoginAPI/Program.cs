@@ -31,8 +31,7 @@ namespace LoginAPI
                     ValidateAudience = false
                 };
             });
-
-
+        
             // Inicializar o firebase
             FirebaseApp.Create(new AppOptions
             {
